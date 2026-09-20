@@ -18,13 +18,13 @@ GATEWAY_CONFIG = {
         "on_status_codes": [429, 503]
     },
     "targets": [
-        {"override_params": {"model": f"@{settings.GROQ_SLUG}/llama-3.3-70b-versatile"}},
-        {"override_params": {"model": f"@{settings.GROQ_SLUG_2}/llama-3.1-8b-instant"}},
+        {"override_params": {"model": f"@{settings.GROQ_SLUG}/qwen/qwen3.8-27b"}},
+        {"override_params": {"model": f"@{settings.GROQ_SLUG_2}/google/gemma-4-31b-it:free"}},
     ]
 }
 print("GROQ_SLUG:", settings.GROQ_SLUG)
 print("GROQ_SLUG_2:", settings.GROQ_SLUG_2)
-print("Model:", f"@{settings.GROQ_SLUG}/llama-3.3-70b-versatile")
+print("Model:", f"@{settings.GROQ_SLUG}/qwen/qwen3.8-27b")
 
 portkey_client = Portkey(
     api_key=settings.PORTKEY_API_KEY,
@@ -32,7 +32,7 @@ portkey_client = Portkey(
 )
 
 
-def get_langchain_llm(feature: str = "marthala-groq") -> ChatOpenAI:
+def get_langchain_llm(feature: str = "rag-enterprise-openrouter") -> ChatOpenAI:
     """
     Returns a Portkey-backed ChatOpenAI — a drop-in for ChatGroq in LangChain nodes.
 
@@ -57,9 +57,10 @@ def get_langchain_llm(feature: str = "marthala-groq") -> ChatOpenAI:
     return ChatOpenAI(
         api_key=settings.PORTKEY_API_KEY,
         base_url=PORTKEY_GATEWAY_URL,
-        model=f"@{settings.GROQ_SLUG}/llama-3.3-70b-versatile",
+        model=f"@{settings.GROQ_SLUG}/qwen/qwen3.8-27b",
         temperature=0,
-        default_headers=headers
+        default_headers=headers,
+        max_tokens=1000,
     )
 
 def extract_cache_status(response) -> str:

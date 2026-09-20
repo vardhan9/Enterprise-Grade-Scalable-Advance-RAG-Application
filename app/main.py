@@ -69,12 +69,12 @@ def query(request: QueryRequest):
 
     try:
         # Gate 1: NeMo Guardrails — blocks off-topic, jailbreaks, and handles dialog
-        rail_fired, rail_response = guard(q)
-        if rail_fired:
+        guard_result = guard(q)
+        if guard_result.blocked:
             logfire.info(f"🛡️ Request blocked by guardrails | thread={thread_id}")
             return {
                 "question": q,
-                "answer": rail_response,
+                "answer": guard_result.response,
                 "thought_process": ["Intent: Guardrails Fired", "Retrieval: Skipped"],
                 "status": "Blocked by guardrails.",
                 "sources": []

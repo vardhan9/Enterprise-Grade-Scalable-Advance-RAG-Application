@@ -15,7 +15,7 @@ class Settings:
 
     # --- LLM GATEWAY (PORTKEY) ---
     PORTKEY_API_KEY = os.getenv("PORTKEY_API_KEY")
-    GROQ_SLUG =  "marthala-groq"     # primary: @rag/llama-3.3-70b-versatile
+    GROQ_SLUG =  "rag-enterprise-openrouter"     # primary: @rag/llama-3.3-70b-versatile
     GROQ_SLUG_2 = "marthala-groq-2"  # fallback: @brag/llama-3.1-8b-instant
 
 settings = Settings()
