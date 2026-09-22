@@ -24,8 +24,6 @@ The key engineering question is:
 
 ## 2. Architecture
 
-![High-Level Architecture](enterprise_rag_diagrams/01_high_level_architecture.png)
-
 ### Main components
 
 | Layer | Technology | Purpose |
@@ -44,8 +42,6 @@ The key engineering question is:
 ---
 
 ## 3. End-to-End RAG Flow
-
-![RAG Pipeline](enterprise_rag_diagrams/02_end_to_end_rag_pipeline.png)
 
 ```text
 User Query
@@ -72,8 +68,6 @@ Conversational requests can bypass document retrieval when appropriate.
 ---
 
 ## 4. Document Ingestion
-
-![Document Ingestion](enterprise_rag_diagrams/03_document_ingestion_pipeline.png)
 
 Supported formats:
 
@@ -106,8 +100,6 @@ Vector dimension: **768**
 ---
 
 ## 5. Retrieval + Reranking
-
-![Retrieval and Reranking](enterprise_rag_diagrams/04_retrieval_reranking_flow.png)
 
 The system uses a two-stage retrieval strategy:
 
@@ -149,8 +141,6 @@ This keeps routing, retrieval, and generation as separate concerns.
 ---
 
 ## 7. Guardrails
-
-![Guardrails](enterprise_rag_diagrams/05_generation_with_guardrails.png)
 
 Two control layers:
 
@@ -205,8 +195,6 @@ Gateway capabilities can include:
 
 ## 9. Observability
 
-![Observability](enterprise_rag_diagrams/07_observability_monitoring.png)
-
 Logfire traces important pipeline stages:
 
 - Guardrails
@@ -225,8 +213,6 @@ The goal is to answer:
 ---
 
 ## 10. Evaluation
-
-![Evaluation Pipeline](enterprise_rag_diagrams/06_evaluation_pipeline.png)
 
 The project uses a repeatable golden dataset and evaluates the live pipeline.
 
@@ -311,8 +297,6 @@ into:
 ---
 
 ## 13. Experimentation
-
-![Experimentation](enterprise_rag_diagrams/08_experimentation_framework.png)
 
 Experiment dimensions include:
 
@@ -432,8 +416,6 @@ streamlit run evals/app.py
 
 ## 17. Deployment
 
-![Deployment](enterprise_rag_diagrams/09_deployment_architecture.png)
-
 The application is container-friendly and can be deployed using Docker and cloud infrastructure.
 
 Production considerations include:
@@ -449,8 +431,6 @@ Production considerations include:
 ---
 
 ## 18. Continuous Improvement
-
-![Continuous Improvement](enterprise_rag_diagrams/10_continuous_improvement_loop.png)
 
 ```text
 BUILD
