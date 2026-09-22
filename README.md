@@ -16,9 +16,7 @@ A production-oriented RAG engineering project focused on **retrieval quality, re
 
 ---
 
-## 2. Architecture
-
-### Main components
+## 2. Main Components
 
 | Layer | Technology | Purpose |
 |---|---|---|
