@@ -2,8 +2,8 @@ import logfire
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
 from app.config import settings
-from app.services.retrieval.embeddings import embed_query
-
+from app.services.retrieval.embeddings_local import embed_query #for local embeddings, use embed_query from embeddings_local.py And Evals uses this for embedding queries to search in Qdrant.
+#from app.services.retrieval.embeddings import embed_query
 
 # Initialize Qdrant Client
 client = QdrantClient(
