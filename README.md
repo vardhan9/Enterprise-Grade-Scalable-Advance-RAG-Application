@@ -10,15 +10,9 @@ A production-oriented RAG engineering project focused on **retrieval quality, re
 
 ![alt text](image-1.png)
 
-Cross-cutting layers:
+![alt text](image.png)
 
-**Guardrails · Agentic Routing · Evaluation · Observability · Gateway**
-
-The key engineering question is:
-
-> **How do we know a RAG system is actually getting better?**
-
-**Measure it.**
+![alt text](image-2.png)
 
 ---
 
