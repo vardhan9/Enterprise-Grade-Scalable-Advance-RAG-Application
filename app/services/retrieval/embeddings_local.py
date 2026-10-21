@@ -1,7 +1,7 @@
 import logfire
 
 BATCH_SIZE = 50
-_EMBEDDING_DIM = 768  # all-mpnet-base-v2
+_EMBEDDING_DIM = 384  # all-MiniLM-L12-v2
 
 _active_model = None
 
@@ -10,8 +10,8 @@ _active_model = None
 
 def _load_model():
     from sentence_transformers import SentenceTransformer
-    logfire.info("Loading sentence-transformers model (all-mpnet-base-v2, 768-dim).")
-    return SentenceTransformer("all-mpnet-base-v2")
+    logfire.info("Loading sentence-transformers model (all-MiniLM-L12-v2, 384-dim).")
+    return SentenceTransformer("all-MiniLM-L12-v2")
 
 
 def _init():

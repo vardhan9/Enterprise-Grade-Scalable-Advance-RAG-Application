@@ -5,7 +5,7 @@ from app.config import settings
 
 BATCH_SIZE = 50
 _GEMINI_DIM = 3072
-_FALLBACK_DIM = 768  # all-mpnet-base-v2
+_FALLBACK_DIM = 384  # all-MiniLM-L12-v2
 
 _active_model = None
 _model_type: str | None = None  # "gemini" or "fallback"
@@ -30,8 +30,8 @@ def _probe_gemini():
 
 def _load_fallback():
     from sentence_transformers import SentenceTransformer
-    logfire.info("Loading sentence-transformers fallback (all-mpnet-base-v2, 768-dim).")
-    return SentenceTransformer("all-mpnet-base-v2")
+    logfire.info("Loading sentence-transformers fallback (all-MiniLM-L12-v2, 384-dim).")
+    return SentenceTransformer("all-MiniLM-L12-v2")
 
 
 def _init():
