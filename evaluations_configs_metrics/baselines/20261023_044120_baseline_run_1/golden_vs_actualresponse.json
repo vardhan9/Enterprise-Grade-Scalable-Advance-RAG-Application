@@ -1,0 +1,27 @@
+{
+  "run_id": "20261023_044120_baseline_run_1",
+  "status": "in_progress",
+  "updated_utc": "2026-10-23T04:42:15.296069+00:00",
+  "total_samples": 3,
+  "answered_samples": 3,
+  "samples": [
+    {
+      "id": 1,
+      "question": "How do you start Redis for a Kubernetes work queue?",
+      "golden_answer": "Run kubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml and kubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml to start a single Redis instance for the work queue.",
+      "actual_full_response": "To start Redis for a Kubernetes work queue, you can follow these steps:\n\n1. **Apply the Redis Pod Configuration**: First, you need to create a Redis instance in your Kubernetes cluster. You can do this by applying the Redis Pod and Service configurations provided in the Kubernetes examples. Run the following commands:\n\n   ```bash\n   kubectl apply -f https://k8s.io/examples/application/job/redis/redis-pod.yaml\n   kubectl apply -f https://k8s.io/examples/application/job/redis/redis-service.yaml\n   ```\n\n   This will create a Redis Pod and expose it via a Service, allowing other Pods to communicate with it.\n\n2. **Fill the Queue with Tasks**: After Redis is running, you can start a temporary interactive Pod to use the Redis CLI and fill the queue with tasks. Execute the following command to start the interactive Pod:\n\n   ```bash\n   kubectl run -i --tty temp --image redis --command \"/bin/sh\"\n   ```\n\n   Once you have the shell prompt, connect to Redis and fill the queue named \"job2\" with tasks:\n\n   ```bash\n   redis-cli -h redis\n   ```\n\n   Inside the Redis prompt, you can add items to the queue using the following commands:\n\n   ```bash\n   rpush job2 \"apple\"\n   rpush job2 \"banana\"\n   rpush job2 \"cherry\"\n   rpush job2 \"date\"\n   rpush job2 \"fig\"\n   rpush job2 \"grape\"\n   rpush job2 \"lemon\"\n   rpush job2 \"melon\"\n   rpush job2 \"orange\"\n   ```\n\n   To check the contents of the queue, you can run:\n\n   ```bash\n   lrange job2 0 -1\n   ```\n\nBy following these steps, you will have Redis running in your Kubernetes cluster, and the queue will be filled with tasks ready for processing by your worker Pods."
+    },
+    {
+      "id": 2,
+      "question": "What does the parallelism field do in the Kubernetes job-wq-2 manifest?",
+      "golden_answer": "The parallelism field is set to 2 in the job-wq-2 manifest, meaning a maximum of 2 Pods run simultaneously. Each pod picks up one unit of work from the Redis queue, processes it, and repeats until the queue is empty.",
+      "actual_full_response": "In the context of a Kubernetes Job, the `parallelism` field specifies the maximum number of Pods that can run concurrently to process tasks from the work queue. This allows you to control how many worker processes are executing at the same time, enabling fine-tuning of resource utilization and job completion speed.\n\nFor example, if you set `parallelism: 5`, Kubernetes will allow up to 5 Pods to run simultaneously, each picking up tasks from the queue. This can help improve throughput for workloads that can be processed in parallel, as multiple Pods can work on different tasks at the same time, reducing the overall time required to complete the job. \n\nIf you do not specify the `parallelism` field, Kubernetes defaults to running one Pod at a time."
+    },
+    {
+      "id": 3,
+      "question": "How do you fill the Redis work queue with tasks using the CLI?",
+      "golden_answer": "Start a temporary interactive pod with kubectl run -i --tty temp --image redis --command \"/bin/sh\", connect to Redis using redis-cli -h redis, then push tasks using rpush job2 followed by the task name (e.g. rpush job2 \"apple\"). Use lrange job2 0 -1 to verify the queue contents.",
+      "actual_full_response": "To fill the Redis work queue with tasks using the CLI, you can use the `LPUSH` command to add tasks to a list. Here’s how you can do it:\n\n1. Open your terminal and connect to your Redis server using the Redis CLI:\n   ```\n   redis-cli\n   ```\n\n2. Use the `LPUSH` command to add tasks to your work queue. For example, if your queue is named `task_queue`, you can add a task like this:\n   ```\n   LPUSH task_queue \"task1\"\n   LPUSH task_queue \"task2\"\n   LPUSH task_queue \"task3\"\n   ```\n\nEach `LPUSH` command adds a new task to the front of the list. You can replace `\"task1\"`, `\"task2\"`, etc., with the actual tasks you want to enqueue.\n\n3. To verify that the tasks have been added, you can use the `LRANGE` command to view the contents of the queue:\n   ```\n   LRANGE task_queue 0 -1\n   ```\n\nThis will display all the tasks currently in the `task_queue`. \n\nFeel free to ask if you need more help with Redis commands!"
+    }
+  ]
+}

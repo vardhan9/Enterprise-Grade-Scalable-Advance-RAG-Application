@@ -53,6 +53,7 @@ portkey-ai                  # Portkey Gateway for unified LLM routing, fallbacks
 ragas                       # RAG-specific evaluation metrics (Faithfulness, Relevancy, Recall)
 deepeval                    # Pytest-compatible test runner wrapping RAGAS & safety metrics
 langfuse                    # Live production monitoring, tracing & user feedback collection
+PyYAML                      # Experiment config YAML (evaluations_configs_metrics/config.yaml)
 
 # --- EMBEDDINGS (SENTENCE TRANSFORMERS) ---
 sentence-transformers       # Used by FlashRank reranker internally

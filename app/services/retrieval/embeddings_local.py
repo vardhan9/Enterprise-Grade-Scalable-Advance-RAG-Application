@@ -1,6 +1,7 @@
 import logfire
 
-BATCH_SIZE = 50
+from app.config import settings
+
 _EMBEDDING_DIM = 384  # all-MiniLM-L12-v2
 
 _active_model = None
@@ -42,11 +43,23 @@ def embed_query(query: str) -> list[float]:
     return _active_model.encode([query])[0].tolist()
 
 
-def embed_texts(texts: list[str]) -> list[list[float]]:
+def embed_texts(texts: list[str], batch_size: int | None = None) -> list[list[float]]:
+    """
+    Embed already-chunked texts. Text chunk_size is controlled upstream
+    (settings.CHUNK_SIZE → chunk_text → embed_texts).
+    batch_size controls how many chunks are encoded per encode() call.
+    """
     _init()
+    size = settings.EMBEDDING_BATCH_SIZE if batch_size is None else int(batch_size)
     all_embeddings: list[list[float]] = []
-    for i in range(0, len(texts), BATCH_SIZE):
-        batch = texts[i : i + BATCH_SIZE]
-        with logfire.span("Embed batch", model="fallback", start=i, size=len(batch)):
+    for i in range(0, len(texts), size):
+        batch = texts[i : i + size]
+        with logfire.span(
+            "Embed batch",
+            model="local",
+            start=i,
+            size=len(batch),
+            text_chunk_size=settings.CHUNK_SIZE,
+        ):
             all_embeddings.extend(_embed_batch(batch))
     return all_embeddings

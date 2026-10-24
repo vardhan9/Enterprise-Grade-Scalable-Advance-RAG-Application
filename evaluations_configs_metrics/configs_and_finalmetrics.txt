@@ -1,0 +1,47 @@
+﻿
+================================================================================
+RUN: 20261021_baseline_local_minilm_run_1 | 2026-10-21T05:09:46.808359+00:00
+NAME: baseline_local_minilm | NOTES: embedding=all-MiniLM-L12-v2 (local, dim=384); llm=qwen/qwen3.8-27b temp=0; chunk=paragraph/1500 overlap=0; retrieve=15→5 reranker=ms-marco-MiniLM-L-6-v2
+CONFIG: embedding=all-MiniLM-L12-v2 dim=384 backend=local | llm=qwen/qwen3.8-27b temp=0 | chunk=paragraph/1500 overlap=0 | retrieval_limit=15 rerank_top_n=5 reranker=ms-marco-MiniLM-L-6-v2
+DATASET: golden=15 scored=14 (skipped id=8 Databricks REST API — empty Phase-1 response)
+RAG METRICS: faithfulness=0.188 answer_relevancy=0.958 context_precision=0.179 context_recall=0.179 answer_correctness=0.674 tool_correctness=1.0
+GUARDRAILS: accuracy=0.667 (4/6) P=1.0 R=0.333 TP=1 TN=3 FP=0 FN=2 | passes=['G2', 'G4', 'G5', 'G6'] failures=['G1', 'G3']
+REPRO: see baselines/20261021_baseline_local_minilm_run_1/reproducibility.json (git fa5e41e, python 3.11, ragas 0.4.3)
+ARTIFACTS: C:/RaMa/RajaMarthala/github_projects/Enterprise-Grade-Scalable-Advance-RAG-Application/evaluations_configs_metrics/baselines/20261021_baseline_local_minilm_run_1
+================================================================================
+================================================================================
+RUN: 20261021_071357_baseline_local_minilm_DEEPSEEK_run_1 | 2026-10-21T07:13:57.845501+00:00
+NAME: baseline_local_minilm_DEEPSEEK | NOTES: embedding=all-MiniLM-L12-v2 (local, dim=384); llm=openai/gpt-4o-mini temp=0; chunk=paragraph/1500 overlap=0; retrieve=15→5 reranker=ms-marco-MiniLM-L-6-v2
+CONFIG: embedding=all-MiniLM-L12-v2 dim=384 backend=local | llm=openai/gpt-4o-mini temp=0 | chunk=paragraph/1500 overlap=0 | retrieval_limit=15 rerank_top_n=5 reranker=ms-marco-MiniLM-L-6-v2
+DATASET: golden=15 scored=15
+RAG METRICS: faithfulness=0.06 answer_relevancy=0.757 context_precision=0.333 context_recall=0.272 answer_correctness=0.55 tool_correctness=0.667
+GUARDRAILS: accuracy=0.833 (5/6) P=1.0 R=0.667 TP=2 TN=3 FP=0 FN=1 | passes=['G2', 'G3', 'G4', 'G5', 'G6'] failures=['G1']
+ARTIFACTS: C:/RaMa/RajaMarthala/github_projects/Enterprise-Grade-Scalable-Advance-RAG-Application/evaluations_configs_metrics/baselines/20261021_071357_baseline_local_minilm_DEEPSEEK_run_1
+================================================================================
+================================================================================
+RUN: 20261023_034405_baseline_gpt-4o-mini_run_1 | 2026-10-23T04:02:53.027634+00:00
+NAME: baseline_gpt-4o-mini | NOTES: embedding=all-MiniLM-L12-v2 (local, dim=384); llm=openai/gpt-4o-mini temp=0; chunk=paragraph/1500 overlap=0; retrieve=15→5 reranker=ms-marco-MiniLM-L-6-v2
+CONFIG: embedding=all-MiniLM-L12-v2 dim=384 backend=local | llm=openai/gpt-4o-mini temp=0 | chunk=paragraph/1500 overlap=0 | retrieval_limit=15 rerank_top_n=5 reranker=ms-marco-MiniLM-L-6-v2
+DATASET: golden=15 scored=15
+RAG METRICS: faithfulness=0.168 answer_relevancy=0.82 context_precision=0.5 context_recall=0.339 answer_correctness=0.559 tool_correctness=0.733
+GUARDRAILS: accuracy=0.833 (5/6) P=1.0 R=0.667 TP=2 TN=3 FP=0 FN=1 | passes=['G2', 'G3', 'G4', 'G5', 'G6'] failures=['G1']
+ARTIFACTS: C:/RaMa/RajaMarthala/github_projects/Enterprise-Grade-Scalable-Advance-RAG-Application/evaluations_configs_metrics/baselines/20261023_034405_baseline_gpt-4o-mini_run_1
+================================================================================
+================================================================================
+RUN: 20261024_021042_baseline_run_1 | 2026-10-24T02:26:30.167131+00:00
+NAME: baseline | NOTES: embedding=all-MiniLM-L12-v2 (local, dim=384); llm=google/gemini-3.8-flash temp=0; chunk=paragraph/1500 overlap=0; retrieve=15→5 reranker=ms-marco-MiniLM-L-6-v2
+CONFIG: embedding=all-MiniLM-L12-v2 dim=384 backend=local | llm=google/gemini-3.8-flash temp=0 | chunk=paragraph/1500 overlap=0 | retrieval_limit=15 rerank_top_n=5 reranker=ms-marco-MiniLM-L-6-v2
+DATASET: golden=15 scored=15
+RAG METRICS: faithfulness=0.179 answer_relevancy=0.951 context_precision=0.333 context_recall=0.222 answer_correctness=0.657 tool_correctness=0.733
+GUARDRAILS: accuracy=0.667 (4/6) P=1.0 R=0.333 TP=1 TN=3 FP=0 FN=2 | passes=['G2', 'G4', 'G5', 'G6'] failures=['G1', 'G3']
+ARTIFACTS: C:/RaMa/RajaMarthala/github_projects/Enterprise-Grade-Scalable-Advance-RAG-Application/evaluations_configs_metrics/baselines/20261024_021042_baseline_run_1
+================================================================================
+================================================================================
+RUN: 20261024_024522_E1_topK_30_Rerank_top_n_5_run_1 | 2026-10-24T03:02:58.342068+00:00
+NAME: E1_topK_30_Rerank_top_n_5 | NOTES: embedding=all-MiniLM-L12-v2 (local, dim=384); llm=google/gemini-3.8-flash temp=0; chunk=paragraph/1500 overlap=0; retrieve=30→5 reranker=ms-marco-MiniLM-L-6-v2
+CONFIG: embedding=all-MiniLM-L12-v2 dim=384 backend=local | llm=google/gemini-3.8-flash temp=0 | chunk=paragraph/1500 overlap=0 | retrieval_limit=30 rerank_top_n=5 reranker=ms-marco-MiniLM-L-6-v2
+DATASET: golden=15 scored=15
+RAG METRICS: faithfulness=0.147 answer_relevancy=0.809 context_precision=0.167 context_recall=0.189 answer_correctness=0.693 tool_correctness=1.0
+GUARDRAILS: accuracy=0.667 (4/6) P=1.0 R=0.333 TP=1 TN=3 FP=0 FN=2 | passes=['G2', 'G4', 'G5', 'G6'] failures=['G1', 'G3']
+ARTIFACTS: C:/RaMa/RajaMarthala/github_projects/Enterprise-Grade-Scalable-Advance-RAG-Application/evaluations_configs_metrics/baselines/20261024_024522_E1_topK_30_Rerank_top_n_5_run_1
+================================================================================

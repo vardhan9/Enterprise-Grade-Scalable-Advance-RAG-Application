@@ -30,13 +30,12 @@ def initialize_rails() -> None:
     global _rails
 
     guard_llm = ChatOpenAI(
-    api_key=settings.PORTKEY_API_KEY,
-    base_url=PORTKEY_GATEWAY_URL,
-    model=f"@{settings.GROQ_SLUG}/qwen/qwen3.8-27b",
-    temperature=0,
-    max_tokens=30,       # a canonical form is short — cap it hard
-   
-)
+        api_key=settings.PORTKEY_API_KEY,
+        base_url=PORTKEY_GATEWAY_URL,
+        model=settings.portkey_chat_model(),
+        temperature=settings.LLM_TEMPERATURE,
+        max_tokens=30,  # a canonical form is short — cap it hard
+    )
 
     config = RailsConfig.from_content(
         colang_content=COLANG_CONTENT,

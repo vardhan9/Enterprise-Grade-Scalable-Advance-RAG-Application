@@ -3,7 +3,6 @@ import logfire
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from app.config import settings
 
-BATCH_SIZE = 50
 _GEMINI_DIM = 3072
 _FALLBACK_DIM = 384  # all-MiniLM-L12-v2
 
@@ -92,11 +91,22 @@ def embed_query(query: str) -> list[float]:
     return _active_model.encode([query])[0].tolist()
 
 
-def embed_texts(texts: list[str]) -> list[list[float]]:
+def embed_texts(texts: list[str], batch_size: int | None = None) -> list[list[float]]:
+    """
+    Embed already-chunked texts. Text chunk_size is controlled upstream
+    (settings.CHUNK_SIZE → chunk_text → embed_texts).
+    """
     _init()
+    size = settings.EMBEDDING_BATCH_SIZE if batch_size is None else int(batch_size)
     all_embeddings: list[list[float]] = []
-    for i in range(0, len(texts), BATCH_SIZE):
-        batch = texts[i : i + BATCH_SIZE]
-        with logfire.span("Embed batch", model=_model_type, start=i, size=len(batch)):
+    for i in range(0, len(texts), size):
+        batch = texts[i : i + size]
+        with logfire.span(
+            "Embed batch",
+            model=_model_type,
+            start=i,
+            size=len(batch),
+            text_chunk_size=settings.CHUNK_SIZE,
+        ):
             all_embeddings.extend(_embed_batch(batch))
     return all_embeddings

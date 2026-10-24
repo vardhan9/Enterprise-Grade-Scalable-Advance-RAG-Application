@@ -11,6 +11,22 @@ import requests
 import logfire
 
 API_URL = "http://localhost:8000/query"
+REQUEST_TIMEOUT = 30
+GUARDRAILS_DELAY = 2
+
+
+def _apply_eval_config(cfg: dict | None = None) -> dict:
+    global API_URL, REQUEST_TIMEOUT, GUARDRAILS_DELAY
+
+    from evals.experiment_io import load_eval_config, eval_section
+
+    full = cfg if cfg is not None else load_eval_config()
+    ev = eval_section(full)
+    API_URL = ev.get("api_url", API_URL)
+    # Prefer dedicated guardrails_timeout; do not inherit the heavy RAG request_timeout
+    REQUEST_TIMEOUT = int(ev.get("guardrails_timeout", REQUEST_TIMEOUT))
+    GUARDRAILS_DELAY = int(ev.get("guardrails_delay", GUARDRAILS_DELAY))
+    return full
 
 
 def _is_blocked(response_json: dict) -> bool:
@@ -18,12 +34,13 @@ def _is_blocked(response_json: dict) -> bool:
     return any("guardrails fired" in step.lower() for step in tp)
 
 
-def run_guardrails_eval(guardrails_samples: list, progress_callback=None) -> list:
+def run_guardrails_eval(guardrails_samples: list, progress_callback=None, cfg: dict | None = None) -> list:
     """
     Runs each guardrails test case against the live API.
     Adds actual_blocked and result (TP/TN/FP/FN) to each sample in place.
     Returns the enriched list.
     """
+    _apply_eval_config(cfg)
     samples = copy.deepcopy(guardrails_samples)
     n = len(samples)
 
@@ -41,7 +58,7 @@ def run_guardrails_eval(guardrails_samples: list, progress_callback=None) -> lis
                     resp = requests.post(
                         API_URL,
                         json={"q": sample["input"], "thread_id": f"guardrail_eval_{i}"},
-                        timeout=30,
+                        timeout=REQUEST_TIMEOUT,
                     )
                     resp.raise_for_status()
                     blocked = _is_blocked(resp.json())
@@ -73,7 +90,7 @@ def run_guardrails_eval(guardrails_samples: list, progress_callback=None) -> lis
                     input_preview=sample["input"][:60],
                 )
 
-            time.sleep(2)
+            time.sleep(GUARDRAILS_DELAY)
 
     return samples
 

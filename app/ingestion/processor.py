@@ -59,8 +59,12 @@ def process_file(file_path: str, filename: str, source_type: str):
                 logfire.warning(f"No text extracted from {filename} — skipping.")
                 return
 
-            # 2. Chunk text
-            chunks = chunk_text(full_text)
+            # 2. Chunk text (size from settings.CHUNK_SIZE / CHUNK_SIZE env)
+            chunks = chunk_text(
+                full_text,
+                chunk_size=settings.CHUNK_SIZE,
+                chunk_overlap=settings.CHUNK_OVERLAP,
+            )
             if not chunks:
                 return
 
@@ -68,13 +72,22 @@ def process_file(file_path: str, filename: str, source_type: str):
             processed_data = {
                 "filename": filename,
                 "source_type": source_type,
+                "chunk_size": settings.CHUNK_SIZE,
+                "chunk_overlap": settings.CHUNK_OVERLAP,
                 "chunks": chunks,
             }
             local_path = save_processed_locally(processed_data, source_type, filename)
-            logfire.info(f"Saved processed data → {local_path}")
+            logfire.info(
+                f"Saved processed data → {local_path} "
+                f"(chunk_size={settings.CHUNK_SIZE}, chunks={len(chunks)})"
+            )
 
             # 4. Embed and index in Qdrant
-            with logfire.span("Vectorizing & Indexing"):
+            with logfire.span(
+                "Vectorizing & Indexing",
+                chunk_size=settings.CHUNK_SIZE,
+                n_chunks=len(chunks),
+            ):
                 embeddings = embed_texts(chunks)
                 points = [
                     models.PointStruct(
@@ -169,8 +182,20 @@ if __name__ == "__main__":
     # Usage:
     #   python -m app.ingestion.processor DATA --wipe
     #   python -m app.ingestion.processor DATA/true_data true
+    #   python -m app.ingestion.processor DATA --wipe --chunk-size 1000
     wipe_requested = "--wipe" in sys.argv
     clean_args = [a for a in sys.argv if a != "--wipe"]
+
+    # Optional: --chunk-size N  (overrides settings.CHUNK_SIZE for this process)
+    if "--chunk-size" in clean_args:
+        idx = clean_args.index("--chunk-size")
+        try:
+            settings.CHUNK_SIZE = int(clean_args[idx + 1])
+            clean_args = clean_args[:idx] + clean_args[idx + 2 :]
+            logfire.info(f"CHUNK_SIZE override → {settings.CHUNK_SIZE}")
+        except (IndexError, ValueError):
+            print("Error: --chunk-size requires an integer, e.g. --chunk-size 1000")
+            sys.exit(1)
 
     target_dir = clean_args[1] if len(clean_args) > 1 else "DATA"
     explicit_type = clean_args[2] if len(clean_args) > 2 else None
@@ -179,5 +204,9 @@ if __name__ == "__main__":
         print(f"Error: path '{target_dir}' does not exist.")
         sys.exit(1)
 
+    logfire.info(
+        f"Ingestion chunk_size={settings.CHUNK_SIZE} "
+        f"chunk_overlap={settings.CHUNK_OVERLAP}"
+    )
     run_universal_ingestion(target_dir, explicit_source_type=explicit_type, wipe=wipe_requested)
     logfire.info("Ingestion job completed.")

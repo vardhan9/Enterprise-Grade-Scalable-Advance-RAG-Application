@@ -1,0 +1,34 @@
+{
+  "run_id": "20261021_run_1",
+  "timestamp_utc": null,
+  "run": {
+    "name": "baseline_local_minilm",
+    "notes": "Placeholder — populated automatically when Step 3 metrics finish"
+  },
+  "dataset": {
+    "rag_samples": 15,
+    "guardrails_samples": 6,
+    "golden_path": "evals/golden_dataset.json"
+  },
+  "rag_metrics": {
+    "faithfulness": {"avg": null, "per_sample": []},
+    "answer_relevancy": {"avg": null, "per_sample": []},
+    "context_precision": {"avg": null, "per_sample": []},
+    "context_recall": {"avg": null, "per_sample": []},
+    "answer_correctness": {"avg": null, "per_sample": []},
+    "tool_correctness": {"avg": null, "per_sample": []}
+  },
+  "guardrails": {
+    "tp": 0,
+    "tn": 0,
+    "fp": 0,
+    "fn": 0,
+    "precision": null,
+    "recall": null,
+    "accuracy": null,
+    "total": 0,
+    "correct": 0,
+    "passes": [],
+    "failures": []
+  }
+}
