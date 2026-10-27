@@ -3,9 +3,9 @@
 # On completion, a snapshot is copied into baselines/<run_id>/config.yaml.
 
 run:
-  name: E4_topK_15_Rerank_top_n_8
+  name: E3_chunk_size_750_chunk_overlap_0
   notes: embedding=all-MiniLM-L12-v2 (local, dim=384); llm=google/gemini-3.8-flash
-    temp=0; chunk=paragraph/1500 overlap=0; retrieve=15→8 reranker=ms-marco-MiniLM-L-6-v2
+    temp=0; chunk=paragraph/750 overlap=0; retrieve=15→5 reranker=ms-marco-MiniLM-L-6-v2
 system:
   embedding_backend: local
   embedding_model: all-MiniLM-L12-v2
@@ -13,16 +13,16 @@ system:
   llm_model: google/gemini-3.8-flash
   llm_temperature: 0
   llm_max_tokens: 4096
-  collection: enterprise-rag
+  collection: enterprise-rag-chunk-750-overlap-0
 chunking:
   strategy: paragraph
-  chunk_size: 1500
+  chunk_size: 750
   chunk_overlap: 0
   implementation: split on \n\n paragraphs; no sliding-window overlap
   source: app.config.Settings.CHUNK_SIZE → chunk_text() → embed_texts()
 retrieval:
   search_limit: 15
-  rerank_top_n: 8
+  rerank_top_n: 5
   reranker: ms-marco-MiniLM-L-6-v2
 generation:
   response_style: grounded_enterprise

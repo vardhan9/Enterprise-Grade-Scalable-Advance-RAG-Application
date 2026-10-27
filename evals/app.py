@@ -145,10 +145,10 @@ CFG_OPTIONS = {
     ],
     "llm_temperature": [0, 0.1, 0.2, 0.5, 0.7],
     "llm_max_tokens": [500, 1000, 2048, 4096],
-    "collection": ["enterprise-rag"],
+    "collection": ["enterprise-rag-chunk-750-overlap-0", "enterprise-rag"],
     "chunk_strategy": ["paragraph"],
     "chunk_size": [500, 800, 1000, 1200, 1500, 2000, 3000],
-    "chunk_overlap": [0, 50, 100, 200],
+    "chunk_overlap": [0, 50, 150, 100, 200],
     "search_limit": [5, 8, 10, 15, 20, 30],
     "rerank_top_n": [3, 5, 8, 10],
     "reranker": ["ms-marco-MiniLM-L-6-v2", "none"],
@@ -262,7 +262,7 @@ with st.expander("⚙️ Experiment configuration (from evaluations_configs_metr
             CFG_OPTIONS["llm_max_tokens"], "cfg_llm_max_tokens",
         )
         system["collection"] = _select(
-            "Qdrant collection", system.get("collection", "enterprise-rag"),
+            "Qdrant collection", system.get("collection", "enterprise-rag-chunk-750-overlap-0"),
             CFG_OPTIONS["collection"], "cfg_collection",
         )
 
@@ -394,22 +394,31 @@ with st.expander("⚙️ Experiment configuration (from evaluations_configs_metr
         st.session_state.eval_cfg = copy.deepcopy(draft_cfg)
         st.session_state.golden = load_golden_dataset(st.session_state.eval_cfg)
 
-        # Sync live-app knobs into .env so uvicorn uses the same LLM / chunk size
+        # Sync live-app knobs into .env so uvicorn picks them up
         from app.config import set_env_value, settings as app_settings
 
         set_env_value("LLM_MODEL", draft_cfg["system"].get("llm_model") or "qwen/qwen3.8-27b")
         set_env_value("LLM_TEMPERATURE", draft_cfg["system"].get("llm_temperature", 0))
         set_env_value("LLM_MAX_TOKENS", draft_cfg["system"].get("llm_max_tokens", 1000))
-        set_env_value("CHUNK_SIZE", draft_cfg["chunking"].get("chunk_size", 1500))
+        set_env_value("CHUNK_SIZE", draft_cfg["chunking"].get("chunk_size", 750))
         set_env_value("CHUNK_OVERLAP", draft_cfg["chunking"].get("chunk_overlap", 0))
+        set_env_value(
+            "QDRANT_COLLECTION_NAME",
+            draft_cfg["system"].get("collection") or "enterprise-rag-chunk-750-overlap-0",
+        )
+        set_env_value("SEARCH_LIMIT", draft_cfg["retrieval"].get("search_limit", 15))
+        set_env_value("RERANK_TOP_N", draft_cfg["retrieval"].get("rerank_top_n", 5))
 
         st.success(
-            f"Saved config.yaml + `.env` LLM_MODEL=`{draft_cfg['system'].get('llm_model')}` "
-            f"→ Portkey route `{app_settings.portkey_chat_model()}`"
+            f"Saved config.yaml + `.env` — "
+            f"LLM=`{draft_cfg['system'].get('llm_model')}` · "
+            f"retrieve `{draft_cfg['retrieval'].get('search_limit')}→"
+            f"{draft_cfg['retrieval'].get('rerank_top_n')}` · "
+            f"Portkey `{app_settings.portkey_chat_model()}`"
         )
         st.warning(
-            "Restart FastAPI (`uvicorn app.main:app --reload --port 8000`) before Step 2. "
-            "Planner/responder LLMs are created at import time — without a restart, Qwen stays loaded."
+            "Restart FastAPI only if you changed the **LLM** (cached at import). "
+            "Search limit / rerank top_n reload from `.env` on each retrieve call."
         )
         st.rerun()
 
