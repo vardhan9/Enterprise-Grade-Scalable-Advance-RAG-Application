@@ -3,9 +3,9 @@
 # On completion, a snapshot is copied into baselines/<run_id>/config.yaml.
 
 run:
-  name: E4_chunk_size_1500_chunk_overlap_150
+  name: E5_chunk_size_1500_chunk_overlap_300
   notes: embedding=all-MiniLM-L12-v2 (local, dim=384); llm=google/gemini-3.8-flash
-    temp=0; chunk=paragraph/1500 overlap=150; retrieve=15→5 reranker=ms-marco-MiniLM-L-6-v2
+    temp=0; chunk=paragraph/1500 overlap=300; retrieve=15→5 reranker=ms-marco-MiniLM-L-6-v2
 system:
   embedding_backend: local
   embedding_model: all-MiniLM-L12-v2
@@ -17,7 +17,7 @@ system:
 chunking:
   strategy: paragraph
   chunk_size: 1500
-  chunk_overlap: 150
+  chunk_overlap: 300
   implementation: split on \n\n paragraphs; no sliding-window overlap
   source: app.config.Settings.CHUNK_SIZE → chunk_text() → embed_texts()
 retrieval:

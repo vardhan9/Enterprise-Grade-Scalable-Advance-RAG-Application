@@ -145,10 +145,10 @@ CFG_OPTIONS = {
     ],
     "llm_temperature": [0, 0.1, 0.2, 0.5, 0.7],
     "llm_max_tokens": [500, 1000, 2048, 4096],
-    "collection": ["enterprise-rag-chunk-1500-overlap-150", "enterprise-rag"],
+    "collection": ["enterprise-rag-chunk-1500-overlap-300", "enterprise-rag"],
     "chunk_strategy": ["paragraph"],
     "chunk_size": [500, 800, 1000, 1200, 1500, 2000, 3000],
-    "chunk_overlap": [0, 50, 150, 100, 200],
+    "chunk_overlap": [0, 50, 150, 100, 200, 300, 400, 500],
     "search_limit": [5, 8, 10, 15, 20, 30],
     "rerank_top_n": [3, 5, 8, 10],
     "reranker": ["ms-marco-MiniLM-L-6-v2", "none"],
@@ -262,7 +262,7 @@ with st.expander("⚙️ Experiment configuration (from evaluations_configs_metr
             CFG_OPTIONS["llm_max_tokens"], "cfg_llm_max_tokens",
         )
         system["collection"] = _select(
-            "Qdrant collection", system.get("collection", "enterprise-rag-chunk-1500-overlap-150"),
+            "Qdrant collection", system.get("collection", "enterprise-rag-chunk-1500-overlap-300"),
             CFG_OPTIONS["collection"], "cfg_collection",
         )
 
@@ -401,10 +401,10 @@ with st.expander("⚙️ Experiment configuration (from evaluations_configs_metr
         set_env_value("LLM_TEMPERATURE", draft_cfg["system"].get("llm_temperature", 0))
         set_env_value("LLM_MAX_TOKENS", draft_cfg["system"].get("llm_max_tokens", 1000))
         set_env_value("CHUNK_SIZE", draft_cfg["chunking"].get("chunk_size", 1500))
-        set_env_value("CHUNK_OVERLAP", draft_cfg["chunking"].get("chunk_overlap", 150))
+        set_env_value("CHUNK_OVERLAP", draft_cfg["chunking"].get("chunk_overlap", 300))
         set_env_value(
             "QDRANT_COLLECTION_NAME",
-            draft_cfg["system"].get("collection") or "enterprise-rag-chunk-1500-overlap-150",
+            draft_cfg["system"].get("collection") or "enterprise-rag-chunk-1500-overlap-300",
         )
         set_env_value("SEARCH_LIMIT", draft_cfg["retrieval"].get("search_limit", 15))
         set_env_value("RERANK_TOP_N", draft_cfg["retrieval"].get("rerank_top_n", 5))
