@@ -145,9 +145,9 @@ CFG_OPTIONS = {
     ],
     "llm_temperature": [0, 0.1, 0.2, 0.5, 0.7],
     "llm_max_tokens": [500, 1000, 2048, 4096],
-    "collection": ["enterprise-rag-chunk-1500-overlap-300", "enterprise-rag"],
+    "collection": ["enterprise-rag-chunk-2250-overlap-0", "enterprise-rag"],
     "chunk_strategy": ["paragraph"],
-    "chunk_size": [500, 800, 1000, 1200, 1500, 2000, 3000],
+    "chunk_size": [500, 800, 1000, 1200, 1500, 2250,2000, 3000],
     "chunk_overlap": [0, 50, 150, 100, 200, 300, 400, 500],
     "search_limit": [5, 8, 10, 15, 20, 30],
     "rerank_top_n": [3, 5, 8, 10],
@@ -262,7 +262,7 @@ with st.expander("⚙️ Experiment configuration (from evaluations_configs_metr
             CFG_OPTIONS["llm_max_tokens"], "cfg_llm_max_tokens",
         )
         system["collection"] = _select(
-            "Qdrant collection", system.get("collection", "enterprise-rag-chunk-1500-overlap-300"),
+            "Qdrant collection", system.get("collection", "enterprise-rag-chunk-2250-overlap-0"),
             CFG_OPTIONS["collection"], "cfg_collection",
         )
 
@@ -275,7 +275,7 @@ with st.expander("⚙️ Experiment configuration (from evaluations_configs_metr
         )
     with ch2:
         chunking["chunk_size"] = _select(
-            "Chunk size", chunking.get("chunk_size", 1500),
+            "Chunk size", chunking.get("chunk_size", 2250),
             CFG_OPTIONS["chunk_size"], "cfg_chunk_size",
         )
     with ch3:
@@ -400,11 +400,11 @@ with st.expander("⚙️ Experiment configuration (from evaluations_configs_metr
         set_env_value("LLM_MODEL", draft_cfg["system"].get("llm_model") or "qwen/qwen3.8-27b")
         set_env_value("LLM_TEMPERATURE", draft_cfg["system"].get("llm_temperature", 0))
         set_env_value("LLM_MAX_TOKENS", draft_cfg["system"].get("llm_max_tokens", 1000))
-        set_env_value("CHUNK_SIZE", draft_cfg["chunking"].get("chunk_size", 1500))
-        set_env_value("CHUNK_OVERLAP", draft_cfg["chunking"].get("chunk_overlap", 300))
+        set_env_value("CHUNK_SIZE", draft_cfg["chunking"].get("chunk_size", 2250))
+        set_env_value("CHUNK_OVERLAP", draft_cfg["chunking"].get("chunk_overlap", 0))
         set_env_value(
             "QDRANT_COLLECTION_NAME",
-            draft_cfg["system"].get("collection") or "enterprise-rag-chunk-1500-overlap-300",
+            draft_cfg["system"].get("collection") or "enterprise-rag-chunk-2250-overlap-0",
         )
         set_env_value("SEARCH_LIMIT", draft_cfg["retrieval"].get("search_limit", 15))
         set_env_value("RERANK_TOP_N", draft_cfg["retrieval"].get("rerank_top_n", 5))

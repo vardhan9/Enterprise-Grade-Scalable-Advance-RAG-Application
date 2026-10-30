@@ -15,13 +15,13 @@ class Settings:
     QDRANT_CLUSTER_ENDPOINT = os.getenv("QDRANT_CLUSTER_ENDPOINT")
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     QDRANT_COLLECTION_NAME = os.getenv(
-        "QDRANT_COLLECTION_NAME", "enterprise-rag-chunk-1500-overlap-300"
+        "QDRANT_COLLECTION_NAME", "enterprise-rag-chunk-2250-overlap-0"
     )
     GROQ_MODEL_NAME = "llama-3.3-70b-versatile"
 
     # --- CHUNKING (used before embedding / indexing) ---
-    CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "1500"))
-    CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "300"))
+    CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "2250"))
+    CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "0"))
     EMBEDDING_BATCH_SIZE = int(os.getenv("EMBEDDING_BATCH_SIZE", "50"))
 
     # --- RETRIEVAL (synced from eval UI → .env) ---

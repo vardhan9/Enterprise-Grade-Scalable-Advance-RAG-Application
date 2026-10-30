@@ -117,3 +117,12 @@ RAG METRICS: faithfulness=0.19 answer_relevancy=0.766 context_precision=0.3 cont
 GUARDRAILS: accuracy=0.667 (4/6) P=1.0 R=0.333 TP=1 TN=3 FP=0 FN=2 | passes=['G2', 'G4', 'G5', 'G6'] failures=['G1', 'G3']
 ARTIFACTS: C:/RaMa/RajaMarthala/github_projects/Enterprise-Grade-Scalable-Advance-RAG-Application/evaluations_configs_metrics/baselines/20261028_123830_E5_chunk_size_1500_chunk_overlap_300_run_1
 ================================================================================
+================================================================================
+RUN: 20261030_080000_E6_chunk_size_2250_chunk_overlap_0_run_1 | 2026-10-30T08:17:45.486282+00:00
+NAME: E5_chunk_size_2250_chunk_overlap_0 | NOTES: embedding=all-MiniLM-L12-v2 (local, dim=384); llm=google/gemini-3.8-flash temp=0; chunk=paragraph/2250 overlap=0; retrieve=15→5 reranker=ms-marco-MiniLM-L-6-v2
+CONFIG: embedding=all-MiniLM-L12-v2 dim=384 backend=local | llm=google/gemini-3.8-flash temp=0 | chunk=paragraph/2250 overlap=0 | retrieval_limit=15 rerank_top_n=5 reranker=ms-marco-MiniLM-L-6-v2
+DATASET: golden=15 scored=15
+RAG METRICS: faithfulness=0.332 answer_relevancy=0.795 context_precision=0.5 context_recall=0.483 answer_correctness=0.603 tool_correctness=0.8
+GUARDRAILS: accuracy=0.667 (4/6) P=1.0 R=0.333 TP=1 TN=3 FP=0 FN=2 | passes=['G2', 'G4', 'G5', 'G6'] failures=['G1', 'G3']
+ARTIFACTS: C:/RaMa/RajaMarthala/github_projects/Enterprise-Grade-Scalable-Advance-RAG-Application/evaluations_configs_metrics/baselines/20261030_080000_E5_chunk_size_2250_chunk_overlap_0_run_1
+================================================================================

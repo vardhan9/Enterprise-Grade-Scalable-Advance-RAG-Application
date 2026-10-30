@@ -1,0 +1,42 @@
+# Active experiment configuration.
+# Edited from the Streamlit eval UI and/or by hand.
+# On completion, a snapshot is copied into baselines/<run_id>/config.yaml.
+
+run:
+  name: E5_chunk_size_2250_chunk_overlap_0
+  notes: embedding=all-MiniLM-L12-v2 (local, dim=384); llm=google/gemini-3.8-flash
+    temp=0; chunk=paragraph/2250 overlap=0; retrieve=15→5 reranker=ms-marco-MiniLM-L-6-v2
+system:
+  embedding_backend: local
+  embedding_model: all-MiniLM-L12-v2
+  embedding_dim: 384
+  llm_model: google/gemini-3.8-flash
+  llm_temperature: 0
+  llm_max_tokens: 4096
+  collection: enterprise-rag-chunk-2250-overlap-0
+chunking:
+  strategy: paragraph
+  chunk_size: 2250
+  chunk_overlap: 0
+  implementation: split on \n\n paragraphs; no sliding-window overlap
+  source: app.config.Settings.CHUNK_SIZE → chunk_text() → embed_texts()
+retrieval:
+  search_limit: 15
+  rerank_top_n: 5
+  reranker: ms-marco-MiniLM-L-6-v2
+generation:
+  response_style: grounded_enterprise
+  max_context_chars_in_prompt: 25000
+eval:
+  api_url: http://localhost:8000/query
+  golden_dataset: evals/golden_dataset.json
+  response_truncate: 10000
+  delay_between_calls: 10
+  request_timeout: 300
+  guardrails_timeout: 30
+  guardrails_delay: 2
+  judge_model: '@rag-enterprise-openrouter/openai/gpt-4o-mini'
+  judge_embeddings: sentence-transformers/all-MiniLM-L12-v2
+  batch_size: 1
+  context_truncate: 300
+  context_limit: 2

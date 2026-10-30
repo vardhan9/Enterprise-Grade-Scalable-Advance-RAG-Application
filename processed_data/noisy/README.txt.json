@@ -1,8 +1,8 @@
 {
   "filename": "README.txt",
   "source_type": "noisy",
-  "chunk_size": 1500,
-  "chunk_overlap": 300,
+  "chunk_size": 2250,
+  "chunk_overlap": 0,
   "chunks": [
     "Generated synthetic noise dataset files inspired by academic PDF titles.\n\nIncluded formats:\n- TXT\n- HTML\n- DOCX\n- PPTX\n\nThe content is intentionally random and suitable for:\n- testing parsers\n- indexing systems\n- search experiments\n- document ingestion pipelines\n- storage/load simulations"
   ]
